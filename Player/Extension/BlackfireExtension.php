@@ -486,13 +486,24 @@ final class BlackfireExtension extends AbstractExtension
             return $env;
         }
 
-        $builds = array_filter($bag->all(), function ($key) {
+        $builds = $this->filterArrayByKey($bag->all(), function ($key) {
             return is_string($key) && 0 === strpos($key, 'blackfire_build:');
-        }, ARRAY_FILTER_USE_KEY);
+        });
 
         foreach ($builds as $key => $build) {
             $this->blackfire->closeBuild($build);
             $bag->remove($key);
         }
+    }
+
+    /**
+     * @param array $array
+     * @param $callback
+     * @return array
+     */
+    private function filterArrayByKey(array $array, $callback)
+    {
+        $matchedKeys = array_filter(array_keys($array), $callback);
+        return array_intersect_key($array, array_flip($matchedKeys));
     }
 }

@@ -35,7 +35,8 @@ final class ValidateCommand extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        (new CommandInitializer())($input, $output);
+        $initializer = new CommandInitializer();
+        $initializer($input, $output);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
